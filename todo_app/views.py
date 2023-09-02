@@ -1,10 +1,11 @@
 from typing import Any, Dict
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.db.models.query import QuerySet
 from django.views.generic import (
     ListView,
     CreateView,
     UpdateView,
+    DeleteView,
 )
 from .models import ToDoList, ToDoItem
 
@@ -76,3 +77,20 @@ class ItemUpdate(UpdateView):
 
     def get_success_url(self) -> str:
         return reverse("list", args=[self.object.todo_list_id])
+
+class ListDelete(DeleteView):
+    model = ToDoList
+    # You have to use reverse_lazy() instead of reversr()
+    # as the urls are not loaded whe the file is imported.
+    success_url = reverse_lazy("index")
+
+class ItemDelete(DeleteView):
+    model = ToDoItem
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("list", args=[self.kwargs["list_id"]])
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["todo_list"] = self.object.todo_list
+        return context
