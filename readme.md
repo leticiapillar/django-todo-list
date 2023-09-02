@@ -5,9 +5,9 @@
 
 #### Stack
 - Python
-- Django
+- [Django](https://www.djangoproject.com/)
 - SQLite
-- Bootstrap
+- [Simple.css Framework](https://simplecss.org/)
 
 #### Admin site
 - user: admin
